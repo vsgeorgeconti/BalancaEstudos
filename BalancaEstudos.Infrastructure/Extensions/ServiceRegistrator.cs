@@ -6,7 +6,7 @@ using BalancaEstudos.Infrastructure.Interfaces;
 using BalancaEstudos.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BalancaEstudos.Infrastructure
+namespace BalancaEstudos.Infrastructure.Extensions
 {
     public static class ServiceRegistrator
     {

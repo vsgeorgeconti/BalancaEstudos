@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BalancaEstudos.Infrastructure.Interfaces;
 
-namespace BalancaEstudos.Infrastructure
+namespace BalancaEstudos.Infrastructure.Extensions
 {
     public class UnitOfWork : IUnitOfWork
     {

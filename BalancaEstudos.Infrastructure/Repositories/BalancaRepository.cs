@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BalancaEstudos.Domain;
+using BalancaEstudos.Infrastructure.Extensions;
 using BalancaEstudos.Infrastructure.Interfaces;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -33,7 +34,7 @@ namespace BalancaEstudos.Infrastructure.Repositories
             using (var connection = _context.CreateConnection())
             {
                 connection.Open();
-                var result = await connection.ExecuteAsync(sql, new {Id = id});
+                var result = await connection.ExecuteAsync(sql, new { Id = id });
                 return result;
             }
         }

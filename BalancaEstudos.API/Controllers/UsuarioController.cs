@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using BalancaEstudos.Application.Interfaces;
 using BalancaEstudos.Domain;
 using BalancaEstudos.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -14,17 +15,17 @@ namespace BalancaEstudos.API.Controllers
     [Route("")]
     public class UsuarioController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork;
-        public UsuarioController(IUnitOfWork unitOfWork)
+        private readonly IUsuarioService _service;
+        public UsuarioController(IUsuarioService service)
         {
-            this.unitOfWork = unitOfWork;
+            this._service = service;
         }
 
         [HttpGet]
         [Route("v1/Usuarios")]
         public async Task<IActionResult> GetAll()
         {
-            var data = await unitOfWork.Usuarios.GetAllAsync();
+            var data = await _service.GetAll();
             return Ok(data);
         }
         [HttpPost]
@@ -39,7 +40,7 @@ namespace BalancaEstudos.API.Controllers
                 Password = usuario.Password,
                 DataInclusao = usuario.DataInclusao
             };
-            var data = await unitOfWork.Usuarios.AddAsync(user);
+            var data = await _service.Post(usuario);
             return Ok(data);
         }
 
@@ -47,7 +48,7 @@ namespace BalancaEstudos.API.Controllers
         [Route("v1/Usuarios/{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var data = await unitOfWork.Usuarios.DeleteAsync(id);
+            var data =  await _service.Delete(id);
             return Ok($"Usuario {id} deletado");
         }
 

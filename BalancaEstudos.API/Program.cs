@@ -1,5 +1,6 @@
 using System.Data;
-using BalancaEstudos.Infrastructure;
+using BalancaEstudos.Application.Extensions;
+using BalancaEstudos.Infrastructure.Extensions;
 using BalancaEstudos.Infrastructure.Interfaces;
 using BalancaEstudos.Infrastructure.Repositories;
 using Microsoft.Data.SqlClient;
@@ -15,6 +16,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddInfrastructure();
+builder.Services.AddApplicationServices();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,5 +35,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+
+
 
 

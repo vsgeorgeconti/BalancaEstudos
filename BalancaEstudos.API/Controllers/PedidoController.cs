@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BalancaEstudos.Application.Interfaces;
 using BalancaEstudos.Domain;
 using BalancaEstudos.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace BalancaEstudos.API.Controllers
     [ApiController]
     public class PedidoController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork;
-        public PedidoController(IUnitOfWork unitOfWork)
+        private readonly IPedidoService _pedidoService;
+        private readonly IPesagemService _pesagemService;
+        public PedidoController(IPedidoService pedidoService, IPesagemService pesagemService)
         {
-            this.unitOfWork = unitOfWork;
+            this._pedidoService = pedidoService;
+            this._pesagemService = pesagemService;
         }
 
         [HttpGet]
@@ -23,7 +26,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var dados = await unitOfWork.Pedidos.GetAllAsync();
+                var dados = await _pedidoService.GetAsync();
                 return Ok(dados);
             }
             catch
@@ -37,7 +40,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var dados = await unitOfWork.Pedidos.GetByIdAsync(id);
+                var dados = await _pedidoService.GetByIdAsync(id);
                 return Ok(dados);
             }
             catch
@@ -51,7 +54,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var pesagem = await unitOfWork.Pesagens.GetByIdAsync(pedido.PesagemId);
+                var pesagem = await _pesagemService.GetByIdAsync(pedido.PesagemId);
                 if (pesagem == null)
                     return BadRequest("Pesagem não foi encontrada.");
 
@@ -62,7 +65,7 @@ namespace BalancaEstudos.API.Controllers
                     PesagemId = pesagem.Id
                 };
 
-                var dados = await unitOfWork.Pedidos.AddAsync(pedido);
+                var dados = await _pedidoService.AddAsync(pedido);
                 return Ok(dados);
             }
             catch
@@ -76,7 +79,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var dados = await unitOfWork.Pedidos.DeleteAsync(id);
+                var dados = await _pedidoService.DeleteAsync(id);
                 return Ok(dados);
             }
             catch
@@ -90,7 +93,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var dados = await unitOfWork.Pedidos.UpdateAsync(pedido);
+                var dados = await _pedidoService.UpdateAsync(pedido);
                 return Ok(dados);
             }
             catch

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
-namespace BalancaEstudos.Infrastructure
+namespace BalancaEstudos.Infrastructure.Extensions
 {
     public class DapperContext
 {

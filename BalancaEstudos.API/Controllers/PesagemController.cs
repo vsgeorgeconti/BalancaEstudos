@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BalancaEstudos.Application.Interfaces;
 using BalancaEstudos.Domain;
 using BalancaEstudos.Infrastructure;
 using BalancaEstudos.Infrastructure.Interfaces;
@@ -12,10 +13,12 @@ namespace BalancaEstudos.API.Controllers
     [ApiController]
     public class PesagemController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork;
-        public PesagemController(IUnitOfWork unitOfWork)
+        private readonly IPesagemService _pesagemService;
+        private readonly IBalancaService _balancaService;
+        public PesagemController(IPesagemService pesagemService, IBalancaService balancaService)
         {
-            this.unitOfWork = unitOfWork;
+            this._pesagemService = pesagemService;
+            this._balancaService = balancaService;
         }
 
         [HttpGet]
@@ -24,7 +27,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var dados = await unitOfWork.Pesagens.GetAllAsync();
+                var dados = await _pesagemService.GetAllAsync();
                 return Ok(dados);
             }
             catch
@@ -40,7 +43,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var dados = await unitOfWork.Pesagens.GetByIdAsync(id);
+                var dados = await _pesagemService.GetByIdAsync(id);
                 return Ok(dados);
             }
             catch
@@ -55,7 +58,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var balanca = await unitOfWork.Balancas.GetByIdAsync(pesagem.BalancaId);
+                var balanca = await _balancaService.GetByIdAsync(pesagem.BalancaId);
                 if (balanca == null)
                     return NotFound("Balança não foi encontrada.");
 
@@ -67,7 +70,7 @@ namespace BalancaEstudos.API.Controllers
                     BalancaId = balanca.Id,
                 };
 
-                var dados = await unitOfWork.Pesagens.AddAsync(entity);
+                var dados = await _pesagemService.AddAsync(entity);
                 return Ok(dados);
             }
             catch
@@ -82,7 +85,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var dados = await unitOfWork.Pesagens.DeleteAsync(id);
+                var dados = await _pesagemService.DeleteAsync(id);
                 return Ok(dados);
             }
             catch
@@ -97,7 +100,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var dados = await unitOfWork.Pesagens.UpdateAsync(pesagem);
+                var dados = await _pesagemService.UpdateAsync(pesagem);
                 return Ok(dados);
             }
             catch
@@ -111,11 +114,11 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var pesagem = await unitOfWork.Pesagens.GetByIdAsync(id);
+                var pesagem = await _pesagemService.GetByIdAsync(id);
                 if (pesagem == null || pesagem.DataAprovacao != null)
                     return NotFound("Balança não foi encontrada ou já foi aprovada.");
 
-                var dados = await unitOfWork.Pesagens.AprovacaoAsync(pesagem);
+                var dados = await _pesagemService.AprovacaoAsync(pesagem);
                 return Ok(dados);
             }
             catch

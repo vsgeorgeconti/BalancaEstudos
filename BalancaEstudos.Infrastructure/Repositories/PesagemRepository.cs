@@ -1,5 +1,6 @@
 using System.Data;
 using BalancaEstudos.Domain;
+using BalancaEstudos.Infrastructure.Extensions;
 using BalancaEstudos.Infrastructure.Interfaces;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -24,7 +25,7 @@ namespace BalancaEstudos.Infrastructure.Repositories
                 return result;
             };
         }
-
+ 
         public async Task<int> DeleteAsync(int id)
         {
             var sql = "DELETE FROM Pesagem WHERE ID = @Id";

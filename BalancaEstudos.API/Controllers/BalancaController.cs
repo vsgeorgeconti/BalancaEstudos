@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BalancaEstudos.Application.Interfaces;
 using BalancaEstudos.Domain;
 using BalancaEstudos.Infrastructure;
 using BalancaEstudos.Infrastructure.Interfaces;
@@ -15,10 +16,10 @@ namespace BalancaEstudos.API.Controllers
     public class BalancaController : ControllerBase
     {
 
-        private readonly IUnitOfWork unitOfWork;
-        public BalancaController(IUnitOfWork unitOfWork)
+        private readonly IBalancaService _balancaService;
+        public BalancaController(IBalancaService balancaService)
         {
-            this.unitOfWork = unitOfWork;
+            this._balancaService = balancaService;
         }
 
 
@@ -29,7 +30,7 @@ namespace BalancaEstudos.API.Controllers
 
             try
             {
-                var balanca = await unitOfWork.Balancas.GetAllAsync();
+                var balanca = await _balancaService.GetAsync();
                 return Ok(balanca);
             }
             catch
@@ -45,7 +46,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var balanca = await unitOfWork.Balancas.GetByIdAsync(id);
+                var balanca = await _balancaService.GetByIdAsync(id);
                 return Ok(balanca);
             }
             catch
@@ -66,7 +67,7 @@ namespace BalancaEstudos.API.Controllers
                     Modelo = balanca.Modelo,
                 };
 
-                var data = await unitOfWork.Balancas.AddAsync(balanca);
+                var data = await _balancaService.AddAsync(balanca);
                 return Ok(data);
 
             }
@@ -83,7 +84,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var balanca = await unitOfWork.Balancas.DeleteAsync(id);
+                var balanca = await _balancaService.DeleteAsync(id);
                 return Ok();
             }
             catch
@@ -98,7 +99,7 @@ namespace BalancaEstudos.API.Controllers
         {
             try
             {
-                var data = await unitOfWork.Balancas.UpdateAsync(balanca);
+                var data = await _balancaService.UpdateAsync(balanca);
                 return Ok();
             }
             catch
